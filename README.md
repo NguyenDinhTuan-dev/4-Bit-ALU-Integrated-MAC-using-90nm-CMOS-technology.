@@ -5,63 +5,53 @@
 ![Type](https://img.shields.io/badge/Type-Senior%20Design%20Project-orange?style=flat-square)
 
 ## 📖 Project Overview
-[cite_start]This project presents the design and performance evaluation of a **4-bit Arithmetic Logic Unit (ALU)** integrated with a **Multiply-Accumulate (MAC)** unit[cite: 559]. The design targets digital signal processing (DSP) applications where repeated multiplication and accumulation are critical (e.g., filtering, convolution).
+This project presents the design and performance evaluation of a **4-bit Arithmetic Logic Unit (ALU)** integrated with a **Multiply-Accumulate (MAC)** unit. The design utilizes **90nm CMOS technology** and is implemented at the transistor level using Cadence Virtuoso.
 
-The system performs basic arithmetic operations (ADD, SUB, MUL, DIV) and specialized MAC operations. [cite_start]The circuit is implemented at the **transistor level** using **90nm CMOS technology** in **Cadence Virtuoso**[cite: 539, 549].
+The project is structured hierarchically, starting from basic logic gates, building up to the ALU core, and finally integrating the MAC unit for high-speed DSP applications.
 
-## ⚙️ Architecture & Features
-The design is divided into two main processing architectures compared in this study:
+## 📂 Repository Structure
+The design files are organized into three main modules corresponding to the design hierarchy:
 
-### 1. Basic ALU Core
-* **Operations:** Addition, Subtraction, Multiplication (Array Multiplier), Division (Restoring Divider).
-* [cite_start]**Architecture:** Modular design with a 4:1 Multiplexer output selection[cite: 854, 859].
-* [cite_start]**Overflow Detection:** Logic-based detection for Carry, Borrow, and Multiplication/Division overflow[cite: 866].
+### 1. 📁 `Logic_Gates` (Basic Building Blocks)
+Contains the schematic and symbol views of the fundamental CMOS logic gates and sub-circuits used to build the larger system:
+* **Basic Gates:** Inverter (NOT), NAND, NOR, AND, OR, XOR.
+* **Arithmetic Cells:** Half Adder (HA), Full Adder (FA), Half Subtractor, Full Subtractor.
+* **Multiplexers:** 2:1 MUX, 4:1 MUX (used for operation selection).
 
-### 2. MAC Unit (Multiply-Accumulate)
-* [cite_start]**Core Component:** CSA-based Array Multiplier (Carry Save Adder) for high-speed partial product summation[cite: 882].
-* [cite_start]**Accumulator:** Synchronous 8-bit Register (PIPO) with Reset to store cumulative results[cite: 894].
-* [cite_start]**Optimization:** Uses CSA to reduce critical path delay during the accumulation stage compared to ripple carry adders[cite: 903].
+### 2. 📁 `Basic_ALU` (Arithmetic Logic Unit)
+Contains the design of the standalone 4-bit ALU without the MAC unit:
+* **Operations:** Addition (Ripple Carry Adder), Subtraction, Array Multiplication, Restoring Division.
+* **Features:** Includes 4-bit parallel inputs (A, B) and a 4:1 MUX to select the output (Y).
+* **Overflow Logic:** Logic circuits to detect Carry, Borrow, and Overflow conditions.
+
+### 3. 📁 `ALU_Integrated_MAC` (Top-Level Design)
+Contains the final integrated system optimized for DSP tasks:
+* **MAC Unit:** Integrates a **CSA-based Array Multiplier** and an **8-bit PIPO Register** (Accumulator) with synchronous reset.
+* **Function:** Performs consecutive Multiply-Accumulate operations in a single consolidated block.
+* **Performance:** Optimized for delay and throughput compared to standard ripple-carry architectures.
+
+---
 
 ## 🛠 Tools & Environment
 * **Schematic Entry:** Cadence Virtuoso Schematic Editor L.
 * **Simulation:** Virtuoso Visualization & Analysis (Transient Response).
-* **Calculation:** Microsoft Excel (Power & Delay analysis).
-* [cite_start]**Operating Frequency:** 50 MHz[cite: 978].
-* **Supply Voltage (VDC):** 1.0V.
-
-## 📂 Repository Contents
-* `Report/`: Full technical report (PDF) containing theoretical frameworks and block diagrams.
-* `Schematics/`: Screenshots of the transistor-level and gate-level schematics from Cadence.
-* `Waveforms/`: Simulation results validating operation logic (ADD, SUB, MAC operations).
+* **Technology Node:** 90nm CMOS.
+* **Supply Voltage:** 1.0 VDC.
 
 ## 📊 Performance Analysis
-[cite_start]We conducted a comparative analysis between the **Basic ALU** and the **ALU with Integrated MAC** to evaluate the trade-offs in Power and Delay (Simulation at 50MHz, 90nm node)[cite: 983, 998].
+Comparative analysis between the Basic ALU and the ALU with Integrated MAC (Simulation at 50MHz):
 
-### 1. Power Consumption Comparison
-| Design Variant | Dynamic Power | Static Power | **Total Power** | Increase |
-| :--- | :--- | :--- | :--- | :--- |
-| **Basic ALU** | 219.2 µW | 160.7 µW | **379.9 µW** | - |
-| **ALU with MAC** | 239.7 µW | 232.8 µW | **472.5 µW** | +24.37% |
-
-> [cite_start]**Analysis:** The MAC integration increases total power by **~24%**[cite: 1002]. This is an acceptable trade-off given the capability to perform complex DSP operations in a single consolidated block.
-
-### 2. Critical Path Delay (Multiplication/MAC)
-| Operation | Basic ALU Delay | ALU with MAC Delay | Note |
+| Metric | Basic ALU | ALU with MAC | Analysis |
 | :--- | :--- | :--- | :--- |
-| **Multiplication** | ~415 ps | ~567 ps | [cite_start]Increased due to accumulation logic overhead[cite: 987]. |
-| **Division** | ~347 ps | ~529 ps | |
+| **Total Power** | 379.9 µW | 472.5 µW | **~24% increase** due to the addition of accumulator registers and feedback loops. |
+| **Delay (MUL)** | ~415 ps | ~567 ps | Increased latency is expected due to the complexity of the MAC data path. |
+| **Delay (DIV)** | ~347 ps | ~529 ps | Division remains the most timing-critical operation in both designs. |
 
-> [cite_start]**Conclusion:** While the MAC unit introduces additional latency and power consumption due to hardware complexity, it significantly enhances functional density, enabling efficient **Consecutive Multiply-Accumulate** tasks essential for filters (FIR/IIR) and Neural Networks[cite: 994].
-
-## 📉 Simulation Waveforms
-*(Upload your simulation images here)*
-
-* **Fig 1:** Basic ALU Operations (ADD/SUB/MUL) - Verified correct logic.
-* [cite_start]**Fig 2:** MAC Unit Operation - Demonstrating successful accumulation of products over multiple clock cycles[cite: 933].
+> **Conclusion:** Although the MAC unit introduces additional power and delay, it provides essential functionality for DSP algorithms (like FIR Filters/CNNs) that require continuous accumulation, making the trade-off justified.
 
 ## 📜 References
-1.  [cite_start]*Design of a 4-bit ALU with Integrated MAC and Performance Evaluation*, Senior Design Project Report, HCMUTE, July 2025[cite: 558].
-2.  [cite_start]M. Sai Kumar et al., "Design and performance analysis of Multiply-Accumulate (MAC) unit," ICCPCT-2014[cite: 1025].
+1.  *Design of a 4-bit ALU with Integrated MAC and Performance Evaluation*, Senior Design Project Report, HCMUTE, July 2025.
+2.  Neil Weste and David Harris, “CMOS VLSI Design: A Circuits and Systems Perspective”, 4th Edition.
 
 ---
 <p align="center">
