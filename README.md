@@ -53,7 +53,4 @@ Comparative analysis between the Basic ALU and the ALU with Integrated MAC (Simu
 1.  *Design of a 4-bit ALU with Integrated MAC and Performance Evaluation*, Senior Design Project Report, HCMUTE, July 2025.
 2.  Neil Weste and David Harris, “CMOS VLSI Design: A Circuits and Systems Perspective”, 4th Edition.
 
----
-<p align="center">
-  <i>Implemented by Nguyen Dinh Tuan & Nguyen Dac Gia Huy - HCMUTE</i>
-</p>
+
